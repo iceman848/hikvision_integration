@@ -1,0 +1,172 @@
+[
+  {
+    "device": "192.168.10.8",
+    "employee": "00000084",
+    "name": "Muli Joshua Mutula",
+    "date": "2026-08-18",
+    "time": "07:59:11",
+    "status": "checkIn",
+    "serial_no": 589913,
+    "event_id": "192.168.10.8:589913"
+  },
+  {
+    "device": "192.168.10.8",
+    "employee": "00000511",
+    "name": "ONESMUS MWATHA",
+    "date": "2026-08-18",
+    "time": "07:59:16",
+    "status": "checkIn",
+    "serial_no": 589916,
+    "event_id": "192.168.10.8:589916"
+  },
+  {
+    "device": "192.168.10.7",
+    "employee": "00000220",
+    "name": "Mbithi James Manthi",
+    "date": "2026-08-18",
+    "time": "07:59:22",
+    "status": "checkIn",
+    "serial_no": 441837,
+    "event_id": "192.168.10.7:441837"
+  },
+  {
+    "device": "192.168.10.8",
+    "employee": "00000439",
+    "name": "Andrew Getutu",
+    "date": "2026-08-18",
+    "time": "07:59:22",
+    "status": "checkIn",
+    "serial_no": 589919,
+    "event_id": "192.168.10.8:589919"
+  },
+  {
+    "device": "192.168.10.7",
+    "employee": "00000251",
+    "name": "Tuluba Bundi Kaiyera",
+    "date": "2026-08-18",
+    "time": "07:59:26",
+    "status": "checkIn",
+    "serial_no": 441839,
+    "event_id": "192.168.10.7:441839"
+  },
+  {
+    "device": "192.168.10.8",
+    "employee": "00000048",
+    "name": "Gichuhi Ruth Mukami",
+    "date": "2026-08-18",
+    "time": "07:59:27",
+    "status": "checkIn",
+    "serial_no": 589921,
+    "event_id": "192.168.10.8:589921"
+  },
+  {
+    "device": "192.168.10.7",
+    "employee": "00000196",
+    "name": "Opiyo Brendah Nekesa",
+    "date": "2026-08-18",
+    "time": "07:59:31",
+    "status": "checkIn",
+    "serial_no": 441840,
+    "event_id": "192.168.10.7:441840"
+  },
+  {
+    "device": "192.168.10.8",
+    "employee": "00000042",
+    "name": "Mokaya Linet Moraa",
+    "date": "2026-08-18",
+    "time": "07:59:31",
+    "status": "checkIn",
+    "serial_no": 589922,
+    "event_id": "192.168.10.8:589922"
+  },
+  {
+    "device": "192.168.10.8",
+    "employee": "00000046",
+    "name": "Moturi Hyrine Kwamboka",
+    "date": "2026-08-18",
+    "time": "07:59:34",
+    "status": "checkIn",
+    "serial_no": 589923,
+    "event_id": "192.168.10.8:589923"
+  },
+  {
+    "device": "192.168.10.7",
+    "employee": "00000254",
+    "name": "Nduta Peter Mwangi",
+    "date": "2026-08-18",
+    "time": "07:59:36",
+    "status": "checkIn",
+    "serial_no": 441842,
+    "event_id": "192.168.10.7:441842"
+  },
+  {
+    "device": "192.168.10.7",
+    "employee": "00000284",
+    "name": "Ofwera Ali",
+    "date": "2026-08-18",
+    "time": "07:59:42",
+    "status": "checkIn",
+    "serial_no": 441845,
+    "event_id": "192.168.10.7:441845"
+  },
+  {
+    "device": "192.168.10.8",
+    "employee": "00000234",
+    "name": "Chai Tom Mwachireri",
+    "date": "2026-08-18",
+    "time": "07:59:44",
+    "status": "checkIn",
+    "serial_no": 589927,
+    "event_id": "192.168.10.8:589927"
+  },
+  {
+    "device": "192.168.10.7",
+    "employee": "00000009",
+    "name": "Gatuura Timothy Mwangi",
+    "date": "2026-08-18",
+    "time": "08:00:04",
+    "status": "checkIn",
+    "serial_no": 441848,
+    "event_id": "192.168.10.7:441848"
+  },
+  {
+    "device": "192.168.10.7",
+    "employee": "00000186",
+    "name": "Nganga Samuel Kariuki",
+    "date": "2026-08-18",
+    "time": "08:04:57",
+    "status": "checkIn",
+    "serial_no": 441857,
+    "event_id": "192.168.10.7:441857"
+  },
+  {
+    "device": "192.168.10.8",
+    "employee": "00000041",
+    "name": "Mutunga Sabina Mutheu",
+    "date": "2026-08-18",
+    "time": "08:05:18",
+    "status": "checkIn",
+    "serial_no": 589938,
+    "event_id": "192.168.10.8:589938"
+  },
+  {
+    "device": "192.168.10.8",
+    "employee": "00000232",
+    "name": "Njoya Paul Maina",
+    "date": "2026-08-18",
+    "time": "08:08:07",
+    "status": "checkIn",
+    "serial_no": 589941,
+    "event_id": "192.168.10.8:589941"
+  },
+  {
+    "device": "192.168.10.8",
+    "employee": "00000224",
+    "name": "Kamau Stanley Muniu",
+    "date": "2026-08-18",
+    "time": "08:13:25",
+    "status": "checkIn",
+    "serial_no": 589944,
+    "event_id": "192.168.10.8:589944"
+  }
+]

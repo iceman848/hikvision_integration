@@ -1,9 +1,27 @@
-app_name = "hikvision_intergration"
-app_title = "Hikvision Intergration"
+app_name = "hikvision_integration"
+app_title = "Hikvision Integration"
 app_publisher = "Turea"
-app_description = "Intergrate Hikvision face recognition devices with ERPNext by fetching attendance logs and syncing them to employee Checkin"
+app_description = "Integrate Hikvision face recognition devices with ERPNext by fetching attendance logs and syncing them to Employee Checkin"
 app_email = "titus.m@drmattress.com"
 app_license = "mit"
+
+
+after_install = "hikvision_integration.install.after_install"
+
+
+scheduler_events = {
+    "cron": {
+        "* * * * *": [
+            "hikvision_integration.hikvision_integration.hikvision.sync.sync_all_devices"
+        ]
+    }
+}
+
+doc_events = {
+    "Employee": {
+        "validate": "hikvision_integration.employee_hooks.validate_hikvision_employee_id"
+    }
+}
 
 # Apps
 # ------------------
@@ -13,11 +31,11 @@ app_license = "mit"
 # Each item in the list will be shown as an app in the apps page
 # add_to_apps_screen = [
 # 	{
-# 		"name": "hikvision_intergration",
-# 		"logo": "/assets/hikvision_intergration/logo.png",
-# 		"title": "Hikvision Intergration",
-# 		"route": "/hikvision_intergration",
-# 		"has_permission": "hikvision_intergration.api.permission.has_app_permission"
+# 		"name": "hikvision_integration",
+# 		"logo": "/assets/hikvision_integration/logo.png",
+# 		"title": "Hikvision Integration",
+# 		"route": "/hikvision_integration",
+# 		"has_permission": "hikvision_integration.api.permission.has_app_permission"
 # 	}
 # ]
 
@@ -25,15 +43,15 @@ app_license = "mit"
 # ------------------
 
 # include js, css files in header of desk.html
-# app_include_css = "/assets/hikvision_intergration/css/hikvision_intergration.css"
-# app_include_js = "/assets/hikvision_intergration/js/hikvision_intergration.js"
+# app_include_css = "/assets/hikvision_integration/css/hikvision_integration.css"
+# app_include_js = "/assets/hikvision_integration/js/hikvision_integration.js"
 
 # include js, css files in header of web template
-# web_include_css = "/assets/hikvision_intergration/css/hikvision_intergration.css"
-# web_include_js = "/assets/hikvision_intergration/js/hikvision_intergration.js"
+# web_include_css = "/assets/hikvision_integration/css/hikvision_integration.css"
+# web_include_js = "/assets/hikvision_integration/js/hikvision_integration.js"
 
 # include custom scss in every website theme (without file extension ".scss")
-# website_theme_scss = "hikvision_intergration/public/scss/website"
+# website_theme_scss = "hikvision_integration/public/scss/website"
 
 # include js, css files in header of web form
 # webform_include_js = {"doctype": "public/js/doctype.js"}
@@ -51,7 +69,7 @@ app_license = "mit"
 # Svg Icons
 # ------------------
 # include app icons in desk
-# app_include_icons = "hikvision_intergration/public/icons.svg"
+# app_include_icons = "hikvision_integration/public/icons.svg"
 
 # Home Pages
 # ----------
@@ -78,49 +96,49 @@ app_license = "mit"
 
 # add methods and filters to jinja environment
 # jinja = {
-# 	"methods": "hikvision_intergration.utils.jinja_methods",
-# 	"filters": "hikvision_intergration.utils.jinja_filters"
+# 	"methods": "hikvision_integration.utils.jinja_methods",
+# 	"filters": "hikvision_integration.utils.jinja_filters"
 # }
 
 # Installation
 # ------------
 
-# before_install = "hikvision_intergration.install.before_install"
-# after_install = "hikvision_intergration.install.after_install"
+# before_install = "hikvision_integration.install.before_install"
+# after_install = "hikvision_integration.install.after_install"
 
 # Uninstallation
 # ------------
 
-# before_uninstall = "hikvision_intergration.uninstall.before_uninstall"
-# after_uninstall = "hikvision_intergration.uninstall.after_uninstall"
+# before_uninstall = "hikvision_integration.uninstall.before_uninstall"
+# after_uninstall = "hikvision_integration.uninstall.after_uninstall"
 
 # Integration Setup
 # ------------------
 # To set up dependencies/integrations with other apps
 # Name of the app being installed is passed as an argument
 
-# before_app_install = "hikvision_intergration.utils.before_app_install"
-# after_app_install = "hikvision_intergration.utils.after_app_install"
+# before_app_install = "hikvision_integration.utils.before_app_install"
+# after_app_install = "hikvision_integration.utils.after_app_install"
 
 # Integration Cleanup
 # -------------------
 # To clean up dependencies/integrations with other apps
 # Name of the app being uninstalled is passed as an argument
 
-# before_app_uninstall = "hikvision_intergration.utils.before_app_uninstall"
-# after_app_uninstall = "hikvision_intergration.utils.after_app_uninstall"
+# before_app_uninstall = "hikvision_integration.utils.before_app_uninstall"
+# after_app_uninstall = "hikvision_integration.utils.after_app_uninstall"
 
 # Build
 # ------------------
 # To hook into the build process
 
-# after_build = "hikvision_intergration.build.after_build"
+# after_build = "hikvision_integration.build.after_build"
 
 # Desk Notifications
 # ------------------
 # See frappe.core.notifications.get_notification_config
 
-# notification_config = "hikvision_intergration.notifications.get_notification_config"
+# notification_config = "hikvision_integration.notifications.get_notification_config"
 
 # Permissions
 # -----------
@@ -151,47 +169,47 @@ app_license = "mit"
 
 # scheduler_events = {
 # 	"all": [
-# 		"hikvision_intergration.tasks.all"
+# 		"hikvision_integration.tasks.all"
 # 	],
 # 	"daily": [
-# 		"hikvision_intergration.tasks.daily"
+# 		"hikvision_integration.tasks.daily"
 # 	],
 # 	"hourly": [
-# 		"hikvision_intergration.tasks.hourly"
+# 		"hikvision_integration.tasks.hourly"
 # 	],
 # 	"weekly": [
-# 		"hikvision_intergration.tasks.weekly"
+# 		"hikvision_integration.tasks.weekly"
 # 	],
 # 	"monthly": [
-# 		"hikvision_intergration.tasks.monthly"
+# 		"hikvision_integration.tasks.monthly"
 # 	],
 # }
 
 # Testing
 # -------
 
-# before_tests = "hikvision_intergration.install.before_tests"
+# before_tests = "hikvision_integration.install.before_tests"
 
 # Extend DocType Class
 # ------------------------------
 #
 # Specify custom mixins to extend the standard doctype controller.
 # extend_doctype_class = {
-# 	"Task": "hikvision_intergration.custom.task.CustomTaskMixin"
+# 	"Task": "hikvision_integration.custom.task.CustomTaskMixin"
 # }
 
 # Overriding Methods
 # ------------------------------
 #
 # override_whitelisted_methods = {
-# 	"frappe.desk.doctype.event.event.get_events": "hikvision_intergration.event.get_events"
+# 	"frappe.desk.doctype.event.event.get_events": "hikvision_integration.event.get_events"
 # }
 #
 # each overriding function accepts a `data` argument;
 # generated from the base implementation of the doctype dashboard,
 # along with any modifications made in other Frappe apps
 # override_doctype_dashboards = {
-# 	"Task": "hikvision_intergration.task.get_dashboard_data"
+# 	"Task": "hikvision_integration.task.get_dashboard_data"
 # }
 
 # exempt linked doctypes from being automatically cancelled
@@ -205,13 +223,13 @@ app_license = "mit"
 
 # Request Events
 # ----------------
-# before_request = ["hikvision_intergration.utils.before_request"]
-# after_request = ["hikvision_intergration.utils.after_request"]
+# before_request = ["hikvision_integration.utils.before_request"]
+# after_request = ["hikvision_integration.utils.after_request"]
 
 # Job Events
 # ----------
-# before_job = ["hikvision_intergration.utils.before_job"]
-# after_job = ["hikvision_intergration.utils.after_job"]
+# before_job = ["hikvision_integration.utils.before_job"]
+# after_job = ["hikvision_integration.utils.after_job"]
 
 # User Data Protection
 # --------------------
@@ -241,7 +259,7 @@ app_license = "mit"
 # --------------------------------
 
 # auth_hooks = [
-# 	"hikvision_intergration.auth.validate"
+# 	"hikvision_integration.auth.validate"
 # ]
 
 # Automatically update python controller files with type annotations for this app.

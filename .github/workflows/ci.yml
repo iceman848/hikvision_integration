@@ -7,7 +7,7 @@ on:
   pull_request:
 
 concurrency:
-  group: main-hikvision_intergration-${{ github.event.number }}
+  group: main-hikvision_integration-${{ github.event.number }}
   cancel-in-progress: true
 
 jobs:
@@ -88,10 +88,10 @@ jobs:
       - name: Install
         working-directory: /home/runner/frappe-bench
         run: |
-          bench get-app hikvision_intergration $GITHUB_WORKSPACE
+          bench get-app hikvision_integration $GITHUB_WORKSPACE
           bench setup requirements --dev
           bench new-site --db-root-password root --admin-password admin test_site
-          bench --site test_site install-app hikvision_intergration
+          bench --site test_site install-app hikvision_integration
           bench build
         env:
           CI: 'Yes'
@@ -100,6 +100,6 @@ jobs:
         working-directory: /home/runner/frappe-bench
         run: |
           bench --site test_site set-config allow_tests true
-          bench --site test_site run-tests --app hikvision_intergration
+          bench --site test_site run-tests --app hikvision_integration
         env:
           TYPE: server

@@ -1,9 +1,9 @@
 [project]
-name = "hikvision_intergration"
+name = "hikvision_integration"
 authors = [
     { name = "Turea", email = "titus.m@drmattress.com"}
 ]
-description = "Intergrate Hikvision face recognition devices with ERPNext by fetching attendance logs and syncing them to employee Checkin"
+description = "Integrate Hikvision face recognition devices with ERPNext by fetching attendance logs and syncing them to Employee Checkin"
 requires-python = ">=3.14"
 readme = "README.md"
 dynamic = ["version"]
