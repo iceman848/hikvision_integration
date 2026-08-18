@@ -8,8 +8,8 @@ You can install this app using the [bench](https://github.com/frappe/bench) CLI:
 
 ```bash
 cd $PATH_TO_YOUR_BENCH
-bench get-app $URL_OF_THIS_REPO --branch main
-bench install-app hikvision_integration
+bench get-app https://github.com/titusmuteti/hikvision_integration.git
+bench --site erpnext.local install-app hikvision_integration
 ```
 
 ### Contributing
