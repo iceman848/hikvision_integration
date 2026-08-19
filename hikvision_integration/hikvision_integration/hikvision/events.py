@@ -139,7 +139,7 @@ def process_event(device, event):
                 "doctype": "Hikvision Event",
                 "event_id": current_event_id,
                 "device": device.device_ip,
-                "employee": employee_no,
+                "employee_hikvision_id": employee_no,
                 "employee_name": event.get(
                     "name",
                     "",
@@ -153,7 +153,15 @@ def process_event(device, event):
             ignore_permissions=True
         )
 
-    except frappe.DuplicateEntryError:
+    except (
+        frappe.DuplicateEntryError,
+        frappe.UniqueValidationError,
+    ):
+        # event_id is a unique FIELD (not the document's name/primary
+        # key), so Frappe raises UniqueValidationError on a collision
+        # here - DuplicateEntryError is what gets raised for a
+        # duplicate document *name* instead, which isn't this case.
+        # Catching both covers either path correctly.
 
         frappe.db.rollback(
             save_point=savepoint_name
