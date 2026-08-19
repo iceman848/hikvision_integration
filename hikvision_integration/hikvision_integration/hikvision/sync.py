@@ -53,7 +53,10 @@ def process_device(
 
     The end_time is supplied by sync_all_devices()
     so that all devices use the same synchronization
-    boundary.
+    boundary. It must be in the same ISO 8601 + offset
+    format that get_device_start_time() produces for
+    start_time below - the device expects both bounds
+    in a matching format.
     """
 
     start_time = get_device_start_time(
@@ -126,7 +129,7 @@ def process_device(
     return summary
 
 
-def update_last_sync_of_checkin(sync_end_time):
+def update_last_sync_of_checkin(db_sync_time):
     """
     Update Last Sync of Checkin for all Shift Types
     that have Auto Attendance enabled.
@@ -141,7 +144,7 @@ def update_last_sync_of_checkin(sync_end_time):
         SET last_sync_of_checkin = %s
         WHERE enable_auto_attendance = 1
         """,
-        sync_end_time,
+        db_sync_time,
     )
 
 
@@ -149,7 +152,7 @@ def sync_all_devices():
     """
     Synchronize all configured Hikvision devices.
 
-    All devices use the same sync_end_time.
+    All devices use the same sync boundary instant.
 
     Last Sync of Checkin is updated only when every
     configured device completes successfully.
@@ -159,18 +162,22 @@ def sync_all_devices():
 
     results = {}
 
-    # Create ONE synchronization boundary for all devices.
-    #
-    # This means Device 1 and Device 2 are both queried
-    # up to exactly the same point in time.
+    # Create ONE synchronization boundary instant for all devices,
+    # then derive two different string representations of it -
+    # one for the device queries, one for the DB write. Sending
+    # start_time and end_time to the device in two DIFFERENT formats
+    # was the actual bug: get_device_start_time() returns ISO 8601
+    # with an offset (e.g. "2026-08-19T07:00:00+03:00"), so end_time
+    # has to match that shape too, or the device rejects/misparses
+    # the request - which is why both devices were failing outright
+    # with no per-event detail at all.
     site_tz = get_site_timezone()
 
     now_utc = datetime.now(timezone.utc)
+    now_site = now_utc.astimezone(site_tz)
 
-    sync_end_time = now_utc.astimezone(
-        site_tz
-    ).strftime("%Y-%m-%d %H:%M:%S")
-
+    query_end_time = now_site.isoformat(timespec="seconds")
+    db_sync_time = now_site.strftime("%Y-%m-%d %H:%M:%S")
 
     all_devices_successful = True
 
@@ -180,7 +187,7 @@ def sync_all_devices():
 
             results[device.device_ip] = process_device(
                 device,
-                sync_end_time,
+                query_end_time,
             )
 
         except Exception:
@@ -210,7 +217,7 @@ def sync_all_devices():
     if all_devices_successful and settings.devices:
 
         update_last_sync_of_checkin(
-            sync_end_time
+            db_sync_time
         )
 
     frappe.db.commit()
