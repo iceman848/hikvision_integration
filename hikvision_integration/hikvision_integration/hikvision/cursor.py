@@ -69,19 +69,11 @@ def get_device_start_time(device):
     now_utc = datetime.now(pytz.utc)
     now_site = now_utc.astimezone(site_tz)
 
-    todays_start = now_site.replace(
+    yesterdays_start = (now_site - timedelta(days=1)).replace(
         hour=FIRST_SYNC_START_HOUR,
         minute=FIRST_SYNC_START_MINUTE,
         second=0,
         microsecond=0,
     )
 
-    # Safety: if it's currently earlier than 7am (sync runs before the
-    # workday starts), don't request a start_time in the future - that
-    # would put start_time after end_time and the device would return
-    # nothing, or reject the query outright. Fall back to "now" in
-    # that edge case only.
-    if todays_start > now_site:
-        return now_site.isoformat(timespec="seconds")
-
-    return todays_start.isoformat(timespec="seconds")
+    return yesterdays_start.isoformat(timespec="seconds")
