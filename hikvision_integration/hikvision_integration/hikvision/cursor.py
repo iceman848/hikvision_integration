@@ -6,6 +6,15 @@ import pytz
 
 CURSOR_OVERLAP_SECONDS = 60
 
+# On a device's very first sync (no Hikvision Event stored yet for it),
+# start from this fixed clock time today instead of "now". Without
+# this, start_time and end_time both resolve to "now" a few
+# milliseconds apart - an effectively zero-width query window that
+# misses any scan that happened before you triggered the sync, no
+# matter how recent.
+FIRST_SYNC_START_HOUR = 7
+FIRST_SYNC_START_MINUTE = 0
+
 
 def get_site_timezone():
     """
@@ -58,4 +67,21 @@ def get_device_start_time(device):
         return localized.isoformat(timespec="seconds")
 
     now_utc = datetime.now(pytz.utc)
-    return now_utc.astimezone(site_tz).isoformat(timespec="seconds")
+    now_site = now_utc.astimezone(site_tz)
+
+    todays_start = now_site.replace(
+        hour=FIRST_SYNC_START_HOUR,
+        minute=FIRST_SYNC_START_MINUTE,
+        second=0,
+        microsecond=0,
+    )
+
+    # Safety: if it's currently earlier than 7am (sync runs before the
+    # workday starts), don't request a start_time in the future - that
+    # would put start_time after end_time and the device would return
+    # nothing, or reject the query outright. Fall back to "now" in
+    # that edge case only.
+    if todays_start > now_site:
+        return now_site.isoformat(timespec="seconds")
+
+    return todays_start.isoformat(timespec="seconds")
