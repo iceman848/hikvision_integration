@@ -169,9 +169,8 @@ def sync_all_devices():
 
     sync_end_time = now_utc.astimezone(
         site_tz
-    ).isoformat(
-        timespec="seconds"
-    )
+    ).strftime("%Y-%m-%d %H:%M:%S")
+
 
     all_devices_successful = True
 
