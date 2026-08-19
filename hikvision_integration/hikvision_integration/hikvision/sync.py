@@ -44,24 +44,20 @@ def fetch_device_events(
     )
 
 
-def process_device(device):
+def process_device(
+    device,
+    end_time,
+):
     """
     Synchronize one Hikvision device.
+
+    The end_time is supplied by sync_all_devices()
+    so that all devices use the same synchronization
+    boundary.
     """
 
     start_time = get_device_start_time(
         device
-    )
-
-    # Get an unambiguous current instant (UTC, timezone-aware by
-    # construction), then convert it explicitly to the site's
-    # configured timezone. This carries no assumption about what
-    # frappe.utils.now_datetime() returns in any given version/config -
-    # datetime.now(timezone.utc) is unambiguous on its own.
-    site_tz = get_site_timezone()
-    now_utc = datetime.now(timezone.utc)
-    end_time = now_utc.astimezone(site_tz).isoformat(
-        timespec="seconds"
     )
 
     events = fetch_device_events(
@@ -103,12 +99,11 @@ def process_device(device):
         if i % 20 == 0:
             frappe.db.commit()
 
-    # Always commit at the end of this device's run - not just every 20
-    # events mid-run. Without this, a LATER device failing in
-    # sync_all_devices below would call frappe.db.rollback(), which is
-    # NOT scoped to just that failing device - it would wipe out this
-    # device's leftover uncommitted work too (anything processed since
-    # the last i % 20 checkpoint).
+    # Always commit at the end of this device's run.
+    #
+    # This ensures that if a later device fails and
+    # sync_all_devices() rolls back, this device's
+    # successfully processed events are already saved.
     frappe.db.commit()
 
     skipped_no_status = summary.get(
@@ -131,21 +126,62 @@ def process_device(device):
     return summary
 
 
+def update_last_sync_of_checkin(sync_end_time):
+    """
+    Update Last Sync of Checkin for all Shift Types
+    that have Auto Attendance enabled.
+
+    This is called only after all configured Hikvision
+    devices have synchronized successfully.
+    """
+
+    frappe.db.sql(
+        """
+        UPDATE `tabShift Type`
+        SET last_sync_of_checkin = %s
+        WHERE enable_auto_attendance = 1
+        """,
+        sync_end_time,
+    )
+
+
 def sync_all_devices():
     """
     Synchronize all configured Hikvision devices.
+
+    All devices use the same sync_end_time.
+
+    Last Sync of Checkin is updated only when every
+    configured device completes successfully.
     """
 
     settings = get_hikvision_settings()
 
     results = {}
 
+    # Create ONE synchronization boundary for all devices.
+    #
+    # This means Device 1 and Device 2 are both queried
+    # up to exactly the same point in time.
+    site_tz = get_site_timezone()
+
+    now_utc = datetime.now(timezone.utc)
+
+    sync_end_time = now_utc.astimezone(
+        site_tz
+    ).isoformat(
+        timespec="seconds"
+    )
+
+    all_devices_successful = True
+
     for device in settings.devices:
 
         try:
 
             results[device.device_ip] = process_device(
-                device
+                device,
+                sync_end_time,
             )
 
         except Exception:
@@ -160,11 +196,23 @@ def sync_all_devices():
 
             results[device.device_ip] = "Error"
 
-            # Safe now: process_device always commits its own completed
-            # work before returning or raising, so this rollback can
-            # only ever discard this device's own not-yet-committed
-            # attempt - never a previous device's already-saved data.
+            all_devices_successful = False
+
+            # Safe because process_device() commits its
+            # completed work before returning or raising.
             frappe.db.rollback()
+
+    # Only advance Last Sync of Checkin if ALL devices
+    # completed successfully.
+    #
+    # This prevents Auto Attendance from believing that
+    # all biometric devices have been synchronized when
+    # one of them actually failed.
+    if all_devices_successful and settings.devices:
+
+        update_last_sync_of_checkin(
+            sync_end_time
+        )
 
     frappe.db.commit()
 
